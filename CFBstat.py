@@ -2,12 +2,13 @@ import cfbd
 import pandas as pd
 from matplotlib import pyplot as plt
 import flatdict
+import time
 
 pd.set_option('display.max_columns', None)  # Do not truncate columns
 plt.style.use('ggplot')
 # personal key needed for API access
 # receive your own key here: https://collegefootballdata.com/key
-CFBD_API_KEY = 'NkDiG2bsmr9iRGsvI1m6wHtHFvi4UNtt3/Nn4xx7fBSvmfe6H5WwAu0lvhdgvRuH'
+CFBD_API_KEY = '1m02g7gvMjVYEtY4Gx1qboEvXRB7KLhIA8CNA7nvgBrrCJFs0GT+pSRl4Ys3QnIv'
 
 config = cfbd.Configuration()
 config.api_key['Authorization'] = CFBD_API_KEY
@@ -67,14 +68,40 @@ def generate_teams_df(year=2024):
     return pd.DataFrame(team_df_data)
 
 
-def is_valid_team(team_name, teams_df):
-    return team_name.lower() in teams_df['school'].str.lower().values
+def write_team_to_file(team_name):
+    """Write the team name to a text file."""
+    with open("team_input.txt", "w") as file:
+        file.write(team_name)
 
+def read_validation_result():
+    """Read the validation result (True/False) from the text file."""
+    with open("team_input.txt", "r") as file:
+        result = file.read().strip().lower()  # Convert to lowercase to handle any case
+    if result == 'true':
+        return True
+    else:
+        return False
+
+def is_valid_team(team_name):
+    """Check if the team is valid by calling the microservice."""
+    # Write the team input to a text file
+    write_team_to_file(team_name)
+    
+    # Sleep for a moment to allow the microservice to process the validation
+    time.sleep(7)
+    
+    is_valid = read_validation_result()
+
+    with open("team_input.txt", "w") as file:
+        file.write("")
+
+    # Read the validation result from the text file
+    return is_valid
 
 def get_team_input(teams_df):
     while True:
         team_name = input("Enter an FBS college football team name: ")
-        if is_valid_team(team_name, teams_df):
+        if is_valid_team(team_name):
             return team_name
         else:
             print(f"'{team_name}' is not a valid team name. Please try again.")
