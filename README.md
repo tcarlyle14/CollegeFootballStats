@@ -6,7 +6,7 @@ Communication Contract:
     - The microservice is complete
 
 3. If the microservice isn’t done, which parts aren’t done and when will they be done?
-    - N/A
+    - No problems
 
 4. How is your teammate going to access your microservice? Should they get your code from GitHub (if so, provide a link to your public or private repo)? Should they run your code locally? Is your microservice hosted somewhere? Etc.
     - Access through the microservice can be run locally and pulled from this GitHub repository: https://github.com/tcarlyle14/CollegeFootballStats
@@ -22,12 +22,14 @@ Communication Contract:
     - The microservice utilizes the college football stats API.
 
 How to programmatically REQUEST data from the microservice:
+
     - To request data from the microservice, you would write the input team name as a string to the txt file team_input.txt. The microservice then reads the team name, checks if the team name is in the cfbd API, and returns True or False.
     - Example call:
     with open("team_input.txt", "w") as file:
         file.write(team_name)
 
 How to programmatically RECEIVE data from the microservice:
+
     - To receive data from the microservice, you would read the True or False string returned from the microservice to the txt file team_input.txt to know if a orginal input team name is valid.
     - Example call:
     with open("team_input.txt", "r") as file:

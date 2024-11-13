@@ -34,7 +34,7 @@ def get_team_input():
     while True:
         team_name = input("Enter an FBS college football team name: ")
         if is_valid_team(team_name):
-            return team_name
+            print(f"'{team_name}' is valid team name.")
         else:
             print(f"'{team_name}' is not a valid team name. Please try again.")
 
